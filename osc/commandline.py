@@ -2014,11 +2014,12 @@ Please submit there instead, or use --nodevelproject to force direct submission.
         else:
             raise oscerr.WrongArgs('Please specify at least a project.')
 
-        if not opts.all and package is None and not opts.repository:
-            raise oscerr.WrongOptions('No package name has been provided. Use --all option, if you want to request to delete the entire project.')
-
         if opts.repository:
             repository = opts.repository
+            if package:
+               raise oscerr.WrongOptions('Repositories can only be removed for the entire project.')
+        elif not opts.all and package is None:
+            raise oscerr.WrongOptions('No package name has been provided. Use --all option, if you want to request to delete the entire project.')
 
         if not opts.message:
             import textwrap
