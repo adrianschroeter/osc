@@ -8,7 +8,9 @@ except ImportError:
     from urlparse import urlsplit
 try:
     import keyring
-except ImportError:
+except:
+    # typical ones are ImportError or secretstorage.exceptions.ItemNotFoundException
+    # but seems not to be limited to them, so catch global
     keyring = None
 try:
     import gnomekeyring
