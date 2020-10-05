@@ -5770,6 +5770,9 @@ def result_xml_to_dicts(xml):
             details = statusnode.find('details')
             if details is not None:
                 smap['details'] = details.text
+            if rmap['code'] == 'broken':
+                smap['code'] = smap['code'] + ' ' if smap['code'] else ''
+                smap['code'] += ' repository:' + rmap['state']
             yield smap, is_multi
 
 
@@ -5912,6 +5915,8 @@ def get_prj_results(apiurl, prj, hide_legend=False, csv=False, status_filter=Non
             state = "outdated"
         else:
             state = node.get('state')
+        if node.get('details'):
+            state += ' details: ' + node.get('details')
         tg = (node.get('repository'), node.get('arch'), state)
         targets.append(tg)
         for pacnode in node.findall('status'):
